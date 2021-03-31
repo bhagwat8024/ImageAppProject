@@ -37,4 +37,7 @@ public class ImageViewModel extends AndroidViewModel {
         return DB.imageDAO().getCount();
     }
 
+    public void deleteAllData(){
+        DB.imageDAO().deleteAllData();
+    }
 }

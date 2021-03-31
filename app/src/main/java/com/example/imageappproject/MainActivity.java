@@ -1,5 +1,6 @@
 package com.example.imageappproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -7,9 +8,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.imageappproject.DataBase.ImageAdapter;
 import com.example.imageappproject.DataBase.ImageViewModel;
@@ -21,20 +25,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
-    ImageAdapter mImageAdapter;
+    static ImageAdapter mImageAdapter;
+    static Context mContext;
+    static List<SingleImageEntity> mList = new ArrayList<>();
+    static ImageViewModel viewModel;
 
-    List<SingleImageEntity> mList = new ArrayList<>();
-    ImageViewModel viewModel ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        loadData();
+        Utils.getDataForUi();
     }
 
     public void init(){
-
+        mContext = this;
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mImageAdapter = new ImageAdapter(this);
@@ -42,55 +47,30 @@ public class MainActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(ImageViewModel.class);
 
     }
-    private void loadData(){
 
-        if(viewModel.getCount()==0){
-            DataLoadAsyncTask  task = new DataLoadAsyncTask();
-            task.execute();
-        }
-        else{
-            setImageLiveData();
-        }
-
-    }
-    public class DataLoadAsyncTask extends AsyncTask<Void,Void,List<SingleImageEntity>>{
-
-        @Override
-        protected List<SingleImageEntity> doInBackground(Void... voids) {
-            return NetworkUtils.getDataFromUrl();
-        }
-
-        @Override
-        protected void onPostExecute(List<SingleImageEntity> singleImages) {
-            pushInDataBase(singleImages);
-            super.onPostExecute(singleImages);
-        }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
     }
 
-    private void pushInDataBase(List<SingleImageEntity> list){
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        for(int i=0;i<list.size();i++){
-            SingleImageEntity image = list.get(i);
-            viewModel.insertImage(image);
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.refresh:
+                                refreshData();
+
         }
-        setImageLiveData();
+        return true;
     }
-    private void setImageLiveData(){
 
-        viewModel.getAllImage().observe(this, new Observer<List<SingleImageEntity>>() {
-            @Override
-            public void onChanged(List<SingleImageEntity> singleImageEntities) {
-
-                mList = singleImageEntities;
-                Log.e("hello",singleImageEntities.size()+"");
-                updateUI();
-
-            }
-        });
-
+    private void refreshData() {
+        viewModel.deleteAllData();
+        Utils.loadData();
     }
-    private void updateUI() {
-        mImageAdapter.setList(mList);
-    }
+
+
 }
