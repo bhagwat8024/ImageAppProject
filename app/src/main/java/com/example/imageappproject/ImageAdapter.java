@@ -24,6 +24,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 
     public void setList(ArrayList<SingleImage> list) {
         this.list = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -38,6 +39,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         SingleImage singleImage = list.get(position);
         holder.TitleView.setText(singleImage.getmTitle());
         holder.AlbumIdView.setText(String.valueOf(singleImage.getmAlbumId()));
+        return;
     }
 
     @Override
