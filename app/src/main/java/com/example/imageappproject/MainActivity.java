@@ -1,13 +1,18 @@
 package com.example.imageappproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
+    ImageAdapter mImageAdapter;
+    ArrayList<SingleImage> mList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init(){
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mImageAdapter = new ImageAdapter(this);
+        mRecyclerView.setAdapter(mImageAdapter);
     }
 }

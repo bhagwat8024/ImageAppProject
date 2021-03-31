@@ -14,7 +14,7 @@
             android:padding="8dp">
 
             <ImageView
-                android:id="@+id/small_image_view"
+                android:id="@+id/thumbnail_image_view"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1.5"
