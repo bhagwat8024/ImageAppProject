@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import com.example.imageappproject.DataBase.SingleImageEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ImageAdapter.ClickInterface {
 
     RecyclerView mRecyclerView;
     static ImageAdapter mImageAdapter;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mImageAdapter = new ImageAdapter(this);
+        mImageAdapter = new ImageAdapter(this,this);
         mRecyclerView.setAdapter(mImageAdapter);
         viewModel = ViewModelProviders.of(this).get(ImageViewModel.class);
 
@@ -62,15 +63,27 @@ public class MainActivity extends AppCompatActivity {
         switch (id){
             case R.id.refresh:
                                 refreshData();
+                                return true;
+            case R.id.sort:
+                                sortData();
+                                return true;
 
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void refreshData() {
         viewModel.deleteAllData();
         Utils.loadData();
     }
+    private void sortData(){
+        Utils.sortData();
+    }
 
-
+    @Override
+    public void OnClickMethod(String url) {
+        Intent intent = new Intent(this,ImageActivity.class);
+        intent.putExtra("URL",url);
+        startActivity(intent);
+    }
 }

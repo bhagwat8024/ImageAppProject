@@ -24,6 +24,18 @@ public class Utils {
         task.execute();
 
     }
+
+    public static void sortData() {
+        MainActivity.viewModel.getAllImageByAlbumId().observe((LifecycleOwner) MainActivity.mContext, new Observer<List<SingleImageEntity>>() {
+            @Override
+            public void onChanged(List<SingleImageEntity> singleImageEntities) {
+                MainActivity.mList = singleImageEntities;
+                Log.e("hello",singleImageEntities.size()+"");
+                updateUI();
+            }
+        });
+    }
+
     public static class DataLoadAsyncTask extends AsyncTask<Void,Void, List<SingleImageEntity>> {
 
         @Override

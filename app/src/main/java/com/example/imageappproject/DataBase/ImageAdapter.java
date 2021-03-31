@@ -1,6 +1,7 @@
 package com.example.imageappproject.DataBase;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.imageappproject.ImageActivity;
+import com.example.imageappproject.MainActivity;
 import com.example.imageappproject.R;
 import com.example.imageappproject.SingleImage;
 import com.squareup.picasso.Picasso;
@@ -21,9 +24,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 
     List<SingleImageEntity> list;
     public Context mContext;
+    ClickInterface clickInterface;
 
-    public ImageAdapter(Context mContext) {
+    public interface ClickInterface{
+        void OnClickMethod(String url);
+    }
+
+    public ImageAdapter(Context mContext,ClickInterface clickInterface) {
         this.mContext = mContext;
+        this.clickInterface = clickInterface;
     }
 
     public void setList(List<SingleImageEntity> list) {
@@ -57,7 +66,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         }
     }
 
-    public class ImageHolder extends RecyclerView.ViewHolder {
+    public class ImageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ThumbnailImageView;
         TextView TitleView;
@@ -69,8 +78,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
             ThumbnailImageView = itemView.findViewById(R.id.thumbnail_image_view);
             TitleView = itemView.findViewById(R.id.title_view);
             AlbumIdView = itemView.findViewById(R.id.image_id_view);
-
+            itemView.setOnClickListener(this);
         }
-
+        @Override
+        public void onClick(View v) {
+            String url = list.get(getAdapterPosition()).mImageUrl;
+            clickInterface.OnClickMethod(url);
+        }
     }
 }
