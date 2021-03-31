@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder> {
@@ -39,6 +41,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         SingleImage singleImage = list.get(position);
         holder.TitleView.setText(singleImage.getmTitle());
         holder.AlbumIdView.setText(String.valueOf(singleImage.getmAlbumId()));
+        Picasso.get().load(singleImage.getmThumnailUrl()).into(holder.ThumbnailImageView);
         return;
     }
 
