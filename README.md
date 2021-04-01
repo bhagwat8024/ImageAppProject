@@ -3,7 +3,7 @@
 This app Retrieve Data From Network Through **Api Call**.
 It is Made using **HttpConnection , InputStream and Reader**.
 **Picasso Library use For Image Retrieve and Load into ImageView**.
-**RecyclerView and Room DataBase Used for Data Presistance Using ViewModel**.This app is made for Screening Assignment for Role of Android Intern in IsolPro Company.
+**RecyclerView and Room DataBase Used for Data Presistance Using ViewModel**.<br/><br/>This app is made for Screening Assignment for Role of Android Intern in **IsolPro Company**.
 
 ### Note:-
 
