@@ -4,11 +4,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.imageappproject.DataBase.SingleImageEntity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Utils {
     public static void getDataForUi(){
@@ -16,7 +19,8 @@ public class Utils {
         if(MainActivity.viewModel.getCount()==0){
             loadData();
         }
-        setImageLiveData();
+        setImageAllData();
+
     }
     public static void loadData(){
 
@@ -26,14 +30,36 @@ public class Utils {
     }
 
     public static void sortData() {
-        MainActivity.viewModel.getAllImageByAlbumId().observe((LifecycleOwner) MainActivity.mContext, new Observer<List<SingleImageEntity>>() {
-            @Override
-            public void onChanged(List<SingleImageEntity> singleImageEntities) {
-                MainActivity.mList = singleImageEntities;
-                Log.e("hello",singleImageEntities.size()+"");
-                updateUI();
+        MainActivity.mList = MainActivity.viewModel.getAllImageByAlbumId();
+        updateUI();
+    }
+
+    public static void showSearchData(String s)
+    {
+        if(s.length()==0){
+            setImageAllData();
+        }
+        else {
+            filter(s);
+        }
+    }
+
+    public static void filter(String charText) {
+        List<SingleImageEntity> list = MainActivity.mList;
+        MainActivity.mList = new ArrayList<>();
+
+        charText = charText.toLowerCase(Locale.getDefault());
+        if (charText.length() == 0) {
+            setImageAllData();
+        } else {
+
+            for (SingleImageEntity wp : list) {
+                if (wp.getmTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    MainActivity.mList.add(wp);
+                }
             }
-        });
+        }
+        updateUI();
     }
 
     public static class DataLoadAsyncTask extends AsyncTask<Void,Void, List<SingleImageEntity>> {
@@ -57,18 +83,10 @@ public class Utils {
             MainActivity.viewModel.insertImage(image);
         }
     }
-    private static void setImageLiveData(){
+    private static void setImageAllData(){
 
-        MainActivity.viewModel.getAllImage().observe((LifecycleOwner) MainActivity.mContext, new Observer<List<SingleImageEntity>>() {
-            @Override
-            public void onChanged(List<SingleImageEntity> singleImageEntities) {
-
-                MainActivity.mList = singleImageEntities;
-                Log.e("hello",singleImageEntities.size()+"");
-                updateUI();
-
-            }
-        });
+        MainActivity.mList = MainActivity.viewModel.getAllImage();
+        updateUI();
 
     }
     private static void updateUI() {

@@ -17,10 +17,10 @@ public interface ImageDAO{
     void insertImage(SingleImageEntity image);
 
     @Query("SELECT * FROM `image-table`")
-    LiveData<List<SingleImageEntity>> getAllImages();
+    List<SingleImageEntity> getAllImages();
 
     @Query("SELECT * FROM `image-table` ORDER BY mAlbumId")
-    LiveData<List<SingleImageEntity>> getAllImagesByAlbumId();
+    List<SingleImageEntity> getAllImagesByAlbumId();
 
     @Query("SELECT COUNT(mImageId) FROM `image-table` ")
     int getCount();

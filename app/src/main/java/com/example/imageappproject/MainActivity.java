@@ -12,9 +12,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.imageappproject.DataBase.ImageAdapter;
 import com.example.imageappproject.DataBase.ImageViewModel;
@@ -30,23 +36,42 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Clic
     static Context mContext;
     static List<SingleImageEntity> mList = new ArrayList<>();
     static ImageViewModel viewModel;
+    EditText searchEditText;
+    Button SearchButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         init();
         Utils.getDataForUi();
     }
 
     public void init(){
+
         mContext = this;
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mImageAdapter = new ImageAdapter(this,this);
         mRecyclerView.setAdapter(mImageAdapter);
         viewModel = ViewModelProviders.of(this).get(ImageViewModel.class);
+        searchEditText = (EditText) findViewById(R.id.searchEditText);
+        SearchButton = findViewById(R.id.search_button);
+        searchInit();
 
+    }
+
+    public void searchInit(){
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Search_String = searchEditText.getText().toString();
+                Search_String = Search_String.trim();
+                Utils.showSearchData(Search_String);
+            }
+        });
     }
 
     @Override
@@ -86,4 +111,6 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Clic
         intent.putExtra("URL",url);
         startActivity(intent);
     }
+
+
 }

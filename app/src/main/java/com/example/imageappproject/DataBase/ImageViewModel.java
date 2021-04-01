@@ -25,11 +25,11 @@ public class ImageViewModel extends AndroidViewModel {
         DB.imageDAO().insertImage(image);
     }
 
-    public LiveData<List<SingleImageEntity>> getAllImage(){
+    public List<SingleImageEntity> getAllImage(){
         return DB.imageDAO().getAllImages();
     }
 
-    public LiveData<List<SingleImageEntity>> getAllImageByAlbumId(){
+    public List<SingleImageEntity> getAllImageByAlbumId(){
         return DB.imageDAO().getAllImagesByAlbumId();
     }
 
