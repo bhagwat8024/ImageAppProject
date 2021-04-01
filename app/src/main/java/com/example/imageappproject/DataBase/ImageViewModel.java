@@ -4,12 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.imageappproject.SingleImage;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageViewModel extends AndroidViewModel {

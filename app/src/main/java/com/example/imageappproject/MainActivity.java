@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.imageappproject.DataBase.ImageAdapter;
@@ -31,14 +32,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ImageAdapter.ClickInterface {
 
-    RecyclerView mRecyclerView;
+    static RecyclerView mRecyclerView;
     static ImageAdapter mImageAdapter;
     static Context mContext;
     static List<SingleImageEntity> mList = new ArrayList<>();
     static ImageViewModel viewModel;
     EditText searchEditText;
     Button SearchButton;
-
+    static ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Clic
         viewModel = ViewModelProviders.of(this).get(ImageViewModel.class);
         searchEditText = (EditText) findViewById(R.id.searchEditText);
         SearchButton = findViewById(R.id.search_button);
+        mProgressBar = (ProgressBar)  findViewById(R.id.progress_circular);
         searchInit();
 
     }

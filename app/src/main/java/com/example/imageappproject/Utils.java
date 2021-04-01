@@ -1,7 +1,11 @@
 package com.example.imageappproject;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -13,7 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class Utils {
+
+
     public static void getDataForUi(){
 
         if(MainActivity.viewModel.getCount()==0){
@@ -53,9 +61,9 @@ public class Utils {
             setImageAllData();
         } else {
 
-            for (SingleImageEntity wp : list) {
-                if (wp.getmTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    MainActivity.mList.add(wp);
+            for (SingleImageEntity image : list) {
+                if (image.getmTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    MainActivity.mList.add(image);
                 }
             }
         }
@@ -72,10 +80,21 @@ public class Utils {
         @Override
         protected void onPostExecute(List<SingleImageEntity> singleImages) {
             pushInDataBase(singleImages);
+            MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
+            MainActivity.mRecyclerView.setVisibility(View.VISIBLE);
             super.onPostExecute(singleImages);
         }
 
+        @Override
+        protected void onPreExecute() {
+            MainActivity.mProgressBar.setVisibility(View.VISIBLE);
+            MainActivity.mRecyclerView.setVisibility(View.INVISIBLE);
+            super.onPreExecute();
+        }
     }
+
+
+
     private static void pushInDataBase(List<SingleImageEntity> list){
 
         for(int i=0;i<list.size();i++){

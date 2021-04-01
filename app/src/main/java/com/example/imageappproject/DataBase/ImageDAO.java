@@ -1,13 +1,9 @@
 package com.example.imageappproject.DataBase;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.imageappproject.SingleImage;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
